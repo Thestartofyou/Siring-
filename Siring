@@ -1,0 +1,67 @@
+# Horse Breeding Management Script
+
+class Horse:
+    def __init__(self, name, age, gender, breed, color):
+        self.name = name
+        self.age = age
+        self.gender = gender
+        self.breed = breed
+        self.color = color
+
+    def __repr__(self):
+        return f"{self.name} ({self.gender}, {self.breed}, {self.color})"
+
+class BreedingPair:
+    def __init__(self, sire, dam):
+        self.sire = sire
+        self.dam = dam
+        self.offspring = []
+
+    def breed(self, offspring_name, breed, color):
+        if self.sire.gender != 'Male' or self.dam.gender != 'Female':
+            print("Invalid breeding pair: sire must be male and dam must be female.")
+            return None
+
+        new_foal = Horse(offspring_name, age=0, gender="Unknown", breed=breed, color=color)
+        self.offspring.append(new_foal)
+        return new_foal
+
+    def __repr__(self):
+        return f"{self.sire.name} x {self.dam.name} with {len(self.offspring)} offspring"
+
+# Horse registry and breeding pairs storage
+horse_registry = []
+breeding_pairs = []
+
+def register_horse(name, age, gender, breed, color):
+    new_horse = Horse(name, age, gender, breed, color)
+    horse_registry.append(new_horse)
+    print(f"Horse {name} registered.")
+    return new_horse
+
+def create_breeding_pair(sire, dam):
+    pair = BreedingPair(sire, dam)
+    breeding_pairs.append(pair)
+    print(f"Breeding pair created: {sire.name} x {dam.name}")
+    return pair
+
+# Example usage
+if __name__ == "__main__":
+    # Registering horses
+    stallion = register_horse("Thunder", 8, "Male", "Arabian", "Black")
+    mare = register_horse("Bella", 6, "Female", "Arabian", "Bay")
+
+    # Creating a breeding pair
+    pair = create_breeding_pair(stallion, mare)
+
+    # Breeding
+    foal = pair.breed("Spark", "Arabian", "Black")
+    if foal:
+        print(f"New foal born: {foal.name} ({foal.breed}, {foal.color})")
+    
+    # Display breeding pairs and offspring
+    print("\nBreeding Pairs:")
+    for pair in breeding_pairs:
+        print(pair)
+        for offspring in pair.offspring:
+            print(f" - Offspring: {offspring}")
